@@ -15,19 +15,46 @@ class Member:
             "Role": self.role
         }
 
+
 class Event:
-    def __init__(self, id, date, description, address, address2, coordinator, image):
+    def __init__(self):
+        self.id = 0
+        self.name = ''
+        self.date = ''
+        self.description = ''
+        self.address = ''
+        self.address2 = ''
+        self.coordinator = ''
+        self.image = ''
+
+    def set_id(self, id):
         self.id = id
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_date(self, date):
         self.date = date
+
+    def set_description(self, description):
         self.description = description
+
+    def set_address(self, address):
         self.address = address
-        self.address2 = address2
+
+    def set_address2(self, address):
+        self.address2 = address
+
+    def set_coordinator(self, coordinator):
         self.coordinator = coordinator
+
+    def set_image(self, image):
         self.image = image
 
     def dictify(self):
         return {
             "Id": self.id,
+            "Name": self.name,
             "Date": self.date,
             "Description": self.description,
             "Address": self.address,
