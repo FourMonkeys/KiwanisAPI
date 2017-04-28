@@ -44,9 +44,11 @@ def directory():
 
 @app.route('/v1/event', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def event():
+    data = request.get_json(silent=True)
+
     if request.method == 'POST':
         try:
-            event_service.create_event(e)
+            event_service.create_event(data)
             msg = {
                 "Status": "Record Added Successfully"
             }
@@ -55,6 +57,7 @@ def event():
             msg = {
                 "Error": str(e)
             }
+            print(e)
             return Response(dumps(msg), status=500, mimetype="application/json")
     elif request.method == 'GET':
         cursor = event_service.list_events()
@@ -63,8 +66,7 @@ def event():
             d.append(c)
         return Response(dumps(d), status=200, mimetype="application/json")
     elif request.method == 'PUT':
-        pass
-
+        event_service.update_event(data)
     return "Event Management"
 
 

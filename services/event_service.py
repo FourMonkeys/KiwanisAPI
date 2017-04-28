@@ -1,5 +1,8 @@
+import pymongo
 from pymongo import MongoClient
 from bson.json_util import dumps
+from bson.objectid import ObjectId
+
 import ast
 from models import model
 from flask import jsonify
@@ -39,8 +42,9 @@ def list_events():
     return events
 
 
-def create_event(event):
+def create_event(data):
     collection = db.Event
+    event = create_event_model(data)
     try:
         collection.insert_one(event.dictify())
         message = {
@@ -55,3 +59,26 @@ def create_event(event):
         code = 2
 
     return code, message
+
+
+def update_event(json):
+    e = create_event_model(json)
+
+    db.Event.update(
+        {"_id": ObjectId(e.id)},
+        e.dictify(),
+        upsert=True
+    )
+
+
+def create_event_model(data):
+    e = model.Event()
+    e.set_name(data["Name"])
+    e.set_address(data["Address"])
+    e.set_address2(data["Address2"])
+    e.set_image(data["Image"])
+    e.set_description(data["Description"])
+    e.set_coordinator(data["Coordinator"])
+    e.set_date(data["Date"])
+    e.set_id(data["id"])
+    return e
